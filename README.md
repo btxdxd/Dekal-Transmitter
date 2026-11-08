@@ -10,7 +10,7 @@
 ### 🚀 Как это работает
 
 ```text
-Launcher / Client ──► REST API (:25999) ──► SQLite (accounts.db)
+Launcher / Client ──► REST API (:9103) ──► SQLite (accounts.db)
                                                    ▲
 Minecraft Client ──[ Login Handshake ]──► MixinServerLogin (Dekal Transmitter)
 ```
@@ -33,7 +33,7 @@ Minecraft Client ──[ Login Handshake ]──► MixinServerLogin (Dekal Tran
 
 ### ⚙️ Сборка
 
-* Требуется **Java 21+** и **NeoForge 26.1.2+**.
+* Требуется **Java 21+** и **NeoForge 1.21.1+**.
 
 ```bash
 ./gradlew build
@@ -43,4 +43,4 @@ Minecraft Client ──[ Login Handshake ]──► MixinServerLogin (Dekal Tran
 ---
 
 > [!WARNING]
-> Порт встроенного веб-сервера (`25999`) и путь к раздаваемым файлам лаунчера (`launcher/`) настраиваются в [Config.java](src/main/java/btxds/dekal/transmitter/Config.java). Не забудьте открыть этот TCP-порт в панели хостинга или файрволе!
+> Порт встроенного веб-сервера (`9103`) и путь к раздаваемым файлам лаунчера (`launcher/`) настраиваются в [Config.java](src/main/java/btxds/dekal/transmitter/Config.java). Не забудьте открыть этот TCP-порт в панели хостинга или файрволе!

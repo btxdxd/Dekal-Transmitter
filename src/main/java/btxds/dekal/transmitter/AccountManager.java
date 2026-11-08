@@ -386,7 +386,7 @@ public class AccountManager {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server != null && uuidStr != null) {
                 GameProfile profile = new GameProfile(UUID.fromString(uuidStr), username);
-                return server.getPlayerList().isOp(new net.minecraft.server.players.NameAndId(profile));
+                return server.getPlayerList().isOp(profile);
             }
         } catch (Throwable ignored) {}
 

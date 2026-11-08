@@ -38,7 +38,6 @@ public class FileServer {
                 Files.createDirectories(Config.SERVER_FILEHOST_DIR);
             }
 
-            // Создаем папку game, если ее еще нет
             Path gameDir = Config.SERVER_FILEHOST_DIR.resolve("game");
             if (!Files.exists(gameDir)) {
                 Files.createDirectories(gameDir);
@@ -166,7 +165,6 @@ public class FileServer {
             return;
         }
 
-        // Манифест модов (только файлы папки mods/*.jar)
         if ("mods/manifest".equalsIgnoreCase(path)) {
             Path modsDir = Config.SERVER_FILEHOST_DIR.resolve("mods");
             Map<String, String> modsMap = new HashMap<>();
@@ -185,7 +183,6 @@ public class FileServer {
             return;
         }
 
-        // Рекурсивный манифест игровых компонентов (launcher/game/**)
         if ("game/manifest".equalsIgnoreCase(path)) {
             Path gameDir = Config.SERVER_FILEHOST_DIR.resolve("game");
             Map<String, String> gameMap = new HashMap<>();
@@ -194,7 +191,6 @@ public class FileServer {
                 try (Stream<Path> stream = Files.walk(gameDir)) {
                     stream.filter(Files::isRegularFile).forEach(p -> {
                         try {
-                            // Относительный путь в формате "config/example.toml"
                             String relative = gameDir.relativize(p).toString().replace('\\', '/');
                             gameMap.put(relative, getOrComputeHash(p));
                         } catch (Exception ignored) {}
@@ -206,7 +202,6 @@ public class FileServer {
             return;
         }
 
-        // Проверка наличия суффикса /hash для любого файла
         boolean isHashRequest = path.endsWith("/hash");
         if (isHashRequest) {
             path = path.substring(0, path.length() - 5);
@@ -214,13 +209,11 @@ public class FileServer {
 
         Path targetFile = Config.SERVER_FILEHOST_DIR.resolve(path).normalize();
 
-        // Защита от выхода за пределы папки launcher (Path Traversal)
         if (!targetFile.startsWith(Config.SERVER_FILEHOST_DIR) || Files.isDirectory(targetFile) || !Files.exists(targetFile)) {
             sendError(exchange, 404, "File Not Found");
             return;
         }
 
-        // Отдача хеша SHA-256
         if (isHashRequest) {
             try {
                 String sha256 = getOrComputeHash(targetFile);
@@ -240,7 +233,6 @@ public class FileServer {
             }
         }
 
-        // Отдача самого файла
         long fileSize = Files.size(targetFile);
         String contentType = getContentType(targetFile.getFileName().toString());
 
